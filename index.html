@@ -119,10 +119,8 @@
 
     <canvas id="confetti"></canvas>
 
-    <!-- Main Wrapper -->
     <div class="w-full max-w-md md:max-w-2xl relative z-10">
         
-        <!-- STAGE 1: Emoji Drama -->
         <div id="stage1" class="stage active flex-col items-center justify-center text-center glass-card rounded-3xl p-8 md:p-12">
             <div id="drama-emoji" class="text-7xl md:text-8xl mb-4 transition-transform duration-300">🥺</div>
             <h2 id="drama-text" class="text-2xl md:text-3xl font-semibold mb-8 h-16 flex items-center justify-center">
@@ -135,7 +133,6 @@
             </div>
         </div>
 
-        <!-- STAGE 2: The Memory Quiz -->
         <div id="stage2" class="stage flex-col items-center glass-card rounded-3xl p-6 md:p-10 text-center w-full">
             <h2 class="romantic-text text-4xl text-pink-400 mb-6 drop-shadow-md">Prove It! 💕</h2>
             
@@ -168,12 +165,10 @@
             </button>
         </div>
 
-        <!-- STAGE 3: Treasure Box -->
         <div id="stage3" class="stage flex-col items-center justify-center text-center py-10">
             <h2 class="romantic-text text-3xl md:text-5xl text-white mb-10 neon-text">You remembered! ✨</h2>
             
             <div onclick="openGift()" class="cursor-pointer animate-heartbeat hover:scale-110 transition-transform">
-                <!-- Glowing Gift Box Emoji -->
                 <div class="text-8xl md:text-9xl drop-shadow-[0_0_30px_rgba(255,20,147,0.9)] relative">
                     🎁
                     <div class="absolute inset-0 bg-pink-500 rounded-full blur-3xl opacity-30 -z-10"></div>
@@ -182,7 +177,6 @@
             <p class="text-pink-300 mt-8 tracking-widest text-sm uppercase animate-pulse">Tap to open your treasure</p>
         </div>
 
-        <!-- STAGE 4: Final Reveal & Photos -->
         <div id="stage4" class="stage flex-col items-center glass-card rounded-3xl p-6 md:p-10 w-full neon-box relative z-20">
             
             <h1 class="romantic-text text-4xl md:text-5xl text-white mb-4 neon-text text-center leading-tight">
@@ -193,7 +187,6 @@
                 "You are truly the love of my life. As you remember these moments of ours, know that my heart beats only for you."
             </p>
 
-            <!-- Auto-adjusting Polaroid Gallery -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 w-full items-center justify-items-center mb-4">
                 <!-- Photo 1 -->
                 <div class="polaroid transform -rotate-3 w-3/4 md:w-full max-w-[220px]">
@@ -207,7 +200,7 @@
                 </div>
                 <!-- Photo 3 -->
                 <div class="polaroid transform -rotate-2 w-3/4 md:w-full max-w-[220px]">
-                    <img src="IMG_0563.jpg" alt="Memory 3" class="w-full h-auto object-cover rounded-sm border border-gray-200">
+                    <img src="IMG100.jpg" alt="Memory 3" class="w-full h-auto object-cover rounded-sm border border-gray-200">
                     <p class="romantic-text text-black text-center mt-2 text-xl">My Langga</p>
                 </div>
             </div>
@@ -222,7 +215,6 @@
     </div>
 
     <script>
-        // --- Stage Transitions ---
         function switchStage(hideId, showId) {
             const hideEl = document.getElementById(hideId);
             const showEl = document.getElementById(showId);
@@ -235,27 +227,23 @@
                 hideEl.style.display = 'none';
                 
                 showEl.style.display = 'flex';
-                void showEl.offsetWidth; // trigger reflow
+                void showEl.offsetWidth; 
                 showEl.classList.add('active');
             }, 600);
         }
 
-        // --- STAGE 1: Emoji Drama Logic ---
         function handleNo() {
             const stage = document.getElementById('stage1');
             const emoji = document.getElementById('drama-emoji');
             const text = document.getElementById('drama-text');
             
-            // Add Shake
             stage.classList.remove('animate-shake');
-            void stage.offsetWidth; // reset animation
+            void stage.offsetWidth; 
             stage.classList.add('animate-shake');
             
-            // Change content
             emoji.innerText = '😭';
             text.innerHTML = 'Where is my love? <br>🥺💔';
             
-            // Revert back after 2 seconds
             setTimeout(() => {
                 emoji.innerText = '🥺';
                 text.innerHTML = 'Love? Love? <br>Are you the love of my life?';
@@ -274,7 +262,6 @@
             }, 1000);
         }
 
-        // --- STAGE 2: Quiz Validation ---
         function checkQuiz() {
             const dateInput = document.getElementById('ans-date').value;
             const callsignInput = document.getElementById('ans-callsign').value.trim().toLowerCase();
@@ -282,7 +269,6 @@
             const errorMsg = document.getElementById('quiz-error');
             const stage = document.getElementById('stage2');
 
-            // Hardcoded Correct Answers
             const correctDate = "2023-08-04";
             const correctCallsign = "love";
             const correctLocation = "naawan";
@@ -291,22 +277,20 @@
                 errorMsg.style.opacity = '0';
                 switchStage('stage2', 'stage3');
             } else {
-                // Wrong Answer Animation
+            
                 errorMsg.style.opacity = '1';
                 stage.classList.remove('animate-shake');
                 void stage.offsetWidth; 
                 stage.classList.add('animate-shake');
                 
-                // Highlight incorrect fields briefly (optional UI polish)
                 ['ans-date', 'ans-callsign', 'ans-location'].forEach(id => {
                     const el = document.getElementById(id);
-                    el.style.borderColor = "#f87171"; // Red border
+                    el.style.borderColor = "#f87171";
                     setTimeout(() => el.style.borderColor = "rgba(255, 105, 180, 0.5)", 2000);
                 });
             }
         }
 
-        // --- STAGE 3 & 4: Open Gift and Confetti ---
         function openGift() {
             switchStage('stage3', 'stage4');
             setTimeout(startConfetti, 500);
@@ -359,7 +343,6 @@
                     p.x += p.speedX;
                     p.angle += p.spin;
                     
-                    // Reset particle when it falls out of bounds
                     if (p.y > canvas.height) {
                         p.y = -20;
                         p.x = Math.random() * canvas.width;
