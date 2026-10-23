@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greetings from Aeldred ♥</title>
+    <!-- Google Fonts & Material Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Base Theme */
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            background-color: #0f0c29;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #240b36);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .romantic-text { font-family: 'Dancing Script', cursive; }
+
+        /* Glassmorphism & Neon Glows */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 105, 180, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(255, 20, 147, 0.2);
+        }
+        .neon-text { text-shadow: 0 0 10px rgba(255, 20, 147, 0.8), 0 0 20px rgba(255, 20, 147, 0.5); }
+        .neon-box { box-shadow: 0 0 15px rgba(255, 20, 147, 0.5), inset 0 0 10px rgba(255, 20, 147, 0.2); }
+
+        /* Stages Transition */
+        .stage {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+            transform: translateY(20px);
+        }
+        .stage.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Inputs Customization */
+        input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 105, 180, 0.5);
+            color: white;
+            color-scheme: dark; /* Makes the native date picker popup dark */
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
+            border-color: #ff69b4;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        input::placeholder { color: rgba(255, 255, 255, 0.5); }
+
+        /* Buttons */
+        .btn-glow {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.4);
+            background: linear-gradient(45deg, #ff1493, #ff69b4);
+        }
+        .btn-glow:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 20, 147, 0.8);
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+        .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.15); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+        .animate-heartbeat { animation: heartbeat 1.5s infinite; }
+
+        /* Polaroid styling */
+        .polaroid {
+            background: white;
+            padding: 10px 10px 25px 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+        .polaroid:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 10; }
+
+        /* Confetti Canvas */
+        #confetti {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="p-4 relative">
+
+    <canvas id="confetti"></canvas>
+
+    <!-- Main Wrapper -->
+    <div class="w-full max-w-md md:max-w-2xl relative z-10">
+        
+        <!-- STAGE 1: Emoji Drama -->
+        <div id="stage1" class="stage active flex-col items-center justify-center text-center glass-card rounded-3xl p-8 md:p-12">
+            <div id="drama-emoji" class="text-7xl md:text-8xl mb-4 transition-transform duration-300">🥺</div>
+            <h2 id="drama-text" class="text-2xl md:text-3xl font-semibold mb-8 h-16 flex items-center justify-center">
+                Love? Love? <br>Are you the love of my life?
+            </h2>
+            
+            <div class="flex gap-4 w-full justify-center">
+                <button onclick="handleYes()" class="btn-glow px-8 py-3 rounded-full font-bold text-lg w-32">Yes</button>
+                <button onclick="handleNo()" class="bg-white/10 border border-white/30 hover:bg-white/20 transition-all px-8 py-3 rounded-full font-bold text-lg w-32 backdrop-blur-sm">No</button>
+            </div>
+        </div>
+
+        <!-- STAGE 2: The Memory Quiz -->
+        <div id="stage2" class="stage flex-col items-center glass-card rounded-3xl p-6 md:p-10 text-center w-full">
+            <h2 class="romantic-text text-4xl text-pink-400 mb-6 drop-shadow-md">Prove It! 💕</h2>
+            
+            <div class="w-full flex flex-col gap-5 text-left">
+                <!-- Date Picker -->
+                <div class="flex flex-col">
+                    <label class="text-pink-200 text-sm mb-1 font-semibold ml-2">When did our relationship start?</label>
+                    <input type="date" id="ans-date" class="w-full px-4 py-3 rounded-xl text-lg font-medium shadow-inner transition-all">
+                </div>
+                
+                <!-- Call Sign -->
+                <div class="flex flex-col">
+                    <label class="text-pink-200 text-sm mb-1 font-semibold ml-2">What is our call sign?</label>
+                    <input type="text" id="ans-callsign" placeholder="e.g. Baby, Honey..." autocomplete="off" 
+                        class="w-full px-4 py-3 rounded-xl text-lg font-medium shadow-inner transition-all">
+                </div>
+
+                <!-- Location -->
+                <div class="flex flex-col">
+                    <label class="text-pink-200 text-sm mb-1 font-semibold ml-2">Location where it all started?</label>
+                    <input type="text" id="ans-location" placeholder="City or Town..." autocomplete="off" 
+                        class="w-full px-4 py-3 rounded-xl text-lg font-medium shadow-inner transition-all">
+                </div>
+            </div>
+            
+            <p id="quiz-error" class="text-red-400 mt-4 h-6 text-sm font-semibold opacity-0 transition-opacity">Some answers are incorrect. Try again, Love! 💔</p>
+            
+            <button onclick="checkQuiz()" class="mt-4 px-10 py-3 text-white rounded-full font-bold text-lg btn-glow flex items-center gap-2">
+                Unlock <span class="material-icons">lock_open</span>
+            </button>
+        </div>
+
+        <!-- STAGE 3: Treasure Box -->
+        <div id="stage3" class="stage flex-col items-center justify-center text-center py-10">
+            <h2 class="romantic-text text-3xl md:text-5xl text-white mb-10 neon-text">You remembered! ✨</h2>
+            
+            <div onclick="openGift()" class="cursor-pointer animate-heartbeat hover:scale-110 transition-transform">
+                <!-- Glowing Gift Box Emoji -->
+                <div class="text-8xl md:text-9xl drop-shadow-[0_0_30px_rgba(255,20,147,0.9)] relative">
+                    🎁
+                    <div class="absolute inset-0 bg-pink-500 rounded-full blur-3xl opacity-30 -z-10"></div>
+                </div>
+            </div>
+            <p class="text-pink-300 mt-8 tracking-widest text-sm uppercase animate-pulse">Tap to open your treasure</p>
+        </div>
+
+        <!-- STAGE 4: Final Reveal & Photos -->
+        <div id="stage4" class="stage flex-col items-center glass-card rounded-3xl p-6 md:p-10 w-full neon-box relative z-20">
+            
+            <h1 class="romantic-text text-4xl md:text-5xl text-white mb-4 neon-text text-center leading-tight">
+                Happy ♥ Day, <br> Eliza Rose!
+            </h1>
+            
+            <p class="text-lg md:text-xl text-pink-100 mb-8 font-light text-center italic px-4">
+                "You are truly the love of my life. As you remember these moments of ours, know that my heart beats only for you."
+            </p>
+
+            <!-- Auto-adjusting Polaroid Gallery -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 w-full items-center justify-items-center mb-4">
+                <!-- Photo 1 -->
+                <div class="polaroid transform -rotate-3 w-3/4 md:w-full max-w-[220px]">
+                    <img src="DSC_0482.jpg" alt="Memory 1" class="w-full h-auto object-cover rounded-sm border border-gray-200">
+                    <p class="romantic-text text-black text-center mt-2 text-xl">My Partner</p>
+                </div>
+                <!-- Photo 2 -->
+                <div class="polaroid transform rotate-2 w-3/4 md:w-full max-w-[220px] md:-translate-y-4">
+                    <img src="Messenger_creation_6f075c07-8b80-4e63-a8d4-de935a6ba42c.jpg" alt="Memory 2" class="w-full h-auto object-cover rounded-sm border border-gray-200">
+                    <p class="romantic-text text-black text-center mt-2 text-xl">My Better Half</p>
+                </div>
+                <!-- Photo 3 -->
+                <div class="polaroid transform -rotate-2 w-3/4 md:w-full max-w-[220px]">
+                    <img src="IMG_0563.jpg" alt="Memory 3" class="w-full h-auto object-cover rounded-sm border border-gray-200">
+                    <p class="romantic-text text-black text-center mt-2 text-xl">My Langga</p>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-2 mt-6">
+                <span class="material-icons text-pink-500 animate-pulse">favorite</span>
+                <span class="text-pink-300 font-semibold tracking-wide uppercase text-sm">Forever Yours</span>
+                <span class="material-icons text-pink-500 animate-pulse">favorite</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Stage Transitions ---
+        function switchStage(hideId, showId) {
+            const hideEl = document.getElementById(hideId);
+            const showEl = document.getElementById(showId);
+            
+            hideEl.style.opacity = '0';
+            hideEl.style.transform = 'translateY(-20px) scale(0.95)';
+            
+            setTimeout(() => {
+                hideEl.classList.remove('active');
+                hideEl.style.display = 'none';
+                
+                showEl.style.display = 'flex';
+                void showEl.offsetWidth; // trigger reflow
+                showEl.classList.add('active');
+            }, 600);
+        }
+
+        // --- STAGE 1: Emoji Drama Logic ---
+        function handleNo() {
+            const stage = document.getElementById('stage1');
+            const emoji = document.getElementById('drama-emoji');
+            const text = document.getElementById('drama-text');
+            
+            // Add Shake
+            stage.classList.remove('animate-shake');
+            void stage.offsetWidth; // reset animation
+            stage.classList.add('animate-shake');
+            
+            // Change content
+            emoji.innerText = '😭';
+            text.innerHTML = 'Where is my love? <br>🥺💔';
+            
+            // Revert back after 2 seconds
+            setTimeout(() => {
+                emoji.innerText = '🥺';
+                text.innerHTML = 'Love? Love? <br>Are you the love of my life?';
+            }, 2500);
+        }
+
+        function handleYes() {
+            const emoji = document.getElementById('drama-emoji');
+            const text = document.getElementById('drama-text');
+            
+            emoji.innerText = '🥰';
+            text.innerHTML = 'Yay! Let\'s proceed...';
+            
+            setTimeout(() => {
+                switchStage('stage1', 'stage2');
+            }, 1000);
+        }
+
+        // --- STAGE 2: Quiz Validation ---
+        function checkQuiz() {
+            const dateInput = document.getElementById('ans-date').value;
+            const callsignInput = document.getElementById('ans-callsign').value.trim().toLowerCase();
+            const locationInput = document.getElementById('ans-location').value.trim().toLowerCase();
+            const errorMsg = document.getElementById('quiz-error');
+            const stage = document.getElementById('stage2');
+
+            // Hardcoded Correct Answers
+            const correctDate = "2023-08-04";
+            const correctCallsign = "love";
+            const correctLocation = "naawan";
+
+            if (dateInput === correctDate && callsignInput === correctCallsign && locationInput === correctLocation) {
+                errorMsg.style.opacity = '0';
+                switchStage('stage2', 'stage3');
+            } else {
+                // Wrong Answer Animation
+                errorMsg.style.opacity = '1';
+                stage.classList.remove('animate-shake');
+                void stage.offsetWidth; 
+                stage.classList.add('animate-shake');
+                
+                // Highlight incorrect fields briefly (optional UI polish)
+                ['ans-date', 'ans-callsign', 'ans-location'].forEach(id => {
+                    const el = document.getElementById(id);
+                    el.style.borderColor = "#f87171"; // Red border
+                    setTimeout(() => el.style.borderColor = "rgba(255, 105, 180, 0.5)", 2000);
+                });
+            }
+        }
+
+        // --- STAGE 3 & 4: Open Gift and Confetti ---
+        function openGift() {
+            switchStage('stage3', 'stage4');
+            setTimeout(startConfetti, 500);
+        }
+
+        function startConfetti() {
+            const canvas = document.getElementById("confetti");
+            const ctx = canvas.getContext("2d");
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            const colors = ['#ff1493', '#ff69b4', '#00ffff', '#ff00ff', '#ffffff', '#ffb6c1'];
+            let particles = [];
+
+            for (let i = 0; i < 200; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    w: Math.random() * 8 + 4,
+                    h: Math.random() * 12 + 8,
+                    color: colors[Math.random() * colors.length | 0],
+                    speedY: Math.random() * 4 + 3,
+                    speedX: Math.random() * 3 - 1.5,
+                    angle: Math.random() * 360,
+                    spin: Math.random() * 0.2 - 0.1
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(p => {
+                    ctx.save();
+                    ctx.translate(p.x + p.w / 2, p.y + p.h / 2);
+                    ctx.rotate(p.angle);
+                    
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = p.color;
+                    ctx.fillStyle = p.color;
+                    
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+                    
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.angle += p.spin;
+                    
+                    // Reset particle when it falls out of bounds
+                    if (p.y > canvas.height) {
+                        p.y = -20;
+                        p.x = Math.random() * canvas.width;
+                        p.speedY = Math.random() * 4 + 3;
+                    }
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
